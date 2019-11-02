@@ -557,12 +557,12 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
             R.id.feedback -> {
                 Utils.openUri(this, AppConfig.v2rayNGIssues)
             }
-            R.id.promotion -> {
+            R.id.OO7VPN -> {
                 Utils.openUri(this, AppConfig.promotionUrl)
             }
-            R.id.donate -> {
+//            R.id.donate -> {
 //                startActivity<InappBuyActivity>()
-            }
+//           }
             R.id.logcat -> {
                 startActivity<LogcatActivity>()
             }

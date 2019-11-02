@@ -23,15 +23,17 @@ android {
     signingConfigs {
         release {
             storeFile file("../key.jks")
-            keyAlias 'ang'
-            keyPassword '123456'
-            storePassword '123456'
+            keyAlias 'key'
+            keyPassword 'hsbc90pw'
+            storePassword 'hsbc90pw'
+            v2SigningEnabled false
         }
         debug {
             storeFile file("../key.jks")
-            keyAlias 'ang'
-            keyPassword '123456'
-            storePassword '123456'
+            keyAlias 'key'
+            keyPassword 'hsbc90pw'
+            storePassword 'hsbc90pw'
+            v2SigningEnabled false
         }
     }
 

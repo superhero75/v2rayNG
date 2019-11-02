@@ -24,13 +24,9 @@
     <item android:title="@string/title_about">
         <menu>
             <item
-                android:id="@+id/promotion"
+                android:id="@+id/OO7VPN"
                 android:icon="@drawable/ic_whatshot_white_24dp"
                 android:title="@string/title_pref_promotion" />
-            <item
-                android:id="@+id/donate"
-                android:icon="@drawable/ic_attach_money_white_24dp"
-                android:title="@string/title_pref_donate" />
             <item
                 android:id="@+id/logcat"
                 android:icon="@drawable/ic_logcat_white_24dp"
