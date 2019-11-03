@@ -103,6 +103,17 @@
                 <action android:name="android.service.quicksettings.action.QS_TILE" />
             </intent-filter>
         </service>
+        
+        
+        <activity
+            android:name=".ui.LoginActivity"
+            android:label="@string/menu_item_import_config_login">
+            <intent-filter>
+                <action android:name="com.v2ray.ang.intent.action.Login" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+              
         <!-- =====================Tasker===================== -->
         <activity
             android:name=".ui.TaskerActivity"

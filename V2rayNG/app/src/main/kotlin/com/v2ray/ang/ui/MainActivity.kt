@@ -1,6 +1,7 @@
 package com.v2ray.ang.ui
 
 import android.Manifest
+import android.app.AlertDialog
 import android.content.*
 import android.net.Uri
 import android.net.VpnService
@@ -9,15 +10,11 @@ import android.view.Menu
 import android.view.MenuItem
 import com.tbruyelle.rxpermissions.RxPermissions
 import com.v2ray.ang.R
-import com.v2ray.ang.util.AngConfigManager
-import com.v2ray.ang.util.Utils
 import kotlinx.android.synthetic.main.activity_main.*
 import android.os.Bundle
 import android.text.TextUtils
 import android.view.KeyEvent
 import com.v2ray.ang.AppConfig
-import com.v2ray.ang.util.MessageUtil
-import com.v2ray.ang.util.V2rayConfigUtil
 import org.jetbrains.anko.*
 import java.lang.ref.SoftReference
 import java.net.URL
@@ -27,11 +24,16 @@ import android.support.v4.view.GravityCompat
 import android.support.v7.app.ActionBarDrawerToggle
 import android.support.v7.widget.helper.ItemTouchHelper
 import android.util.Log
+import android.widget.ListView
+import com.google.gson.JsonArray
+import com.google.gson.JsonObject
+import com.google.gson.JsonParser
 //import com.v2ray.ang.InappBuyActivity
 import rx.Observable
 import rx.android.schedulers.AndroidSchedulers
 import java.util.concurrent.TimeUnit
 import com.v2ray.ang.helper.SimpleItemTouchHelperCallback
+import com.v2ray.ang.util.*
 import com.v2ray.ang.util.AngConfigManager.configs
 
 class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedListener {
@@ -40,6 +42,7 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
         private const val REQUEST_SCAN = 1
         private const val REQUEST_FILE_CHOOSER = 2
         private const val REQUEST_SCAN_URL = 3
+        private const val REQUEST_LOGIN = 4
     }
 
     var isRunning = false
@@ -109,6 +112,23 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
         nav_view.setNavigationItemSelectedListener(this)
     }
 
+    private fun updateSubscription() {
+        doAsync {
+            val sharedPreferences = getSharedPreferences("UserInfo", Context.MODE_PRIVATE)
+            val email = sharedPreferences.getString("email", "")
+            val password = sharedPreferences.getString("password", "")
+            if (!TextUtils.isEmpty(email) && !TextUtils.isEmpty(password)) {
+                val jsonObject = NetUtils.getConfigJsonFromServer(email, password)
+                val result = jsonObject.get("result").asString
+                if ("success" == result) {
+                    uiThread {
+                        importConfigFromJson(jsonObject.toString())
+                    }
+                }
+            }
+        }
+    }
+
     fun startV2Ray() {
         if (AngConfigManager.configs.index < 0) {
             return
@@ -171,6 +191,98 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
                 if (resultCode == RESULT_OK) {
                     importConfigCustomUrl(data?.getStringExtra("SCAN_RESULT"))
                 }
+            REQUEST_LOGIN ->
+                if (resultCode == RESULT_OK) {
+                    importConfigFromJson(data?.getStringExtra("json"))
+                }
+
+        }
+    }
+    private fun importConfigFromJson(json: String?) {
+        Log.d("MainActivity", json)
+        val jsonObject = JsonParser().parse(json) as JsonObject
+        val packages = jsonObject.get("package").asJsonArray
+        val items : Array<String> = Array(packages.size()) {""}
+        var i = 0
+        while (i < packages.size()) {
+            val j = packages.get(i) as JsonObject
+            items[i] = j.get("package").asString
+            i++
+        }
+
+        var selectPosition = 0
+        val list = ListView(this)
+        list.divider = null
+        val customListAdapter = CustomListAdapter(this, items)
+        list.setOnItemClickListener { _, _, position, _ ->
+            customListAdapter.setSelect(position)
+            selectPosition = position
+            customListAdapter.notifyDataSetChanged()
+        }
+        list.adapter = customListAdapter
+
+        if (items.size > 0){
+
+            val dialog = AlertDialog.Builder(this)
+                    .setView(list)
+                    .setTitle(R.string.choose_package)
+                    .setPositiveButton(R.string.choose_package_submit
+                    ) { _, _ ->processNodes(packages.get(selectPosition).asJsonObject, selectPosition.toString()) }
+                    .create()
+            dialog.show()
+
+        } else {
+            val dialog = AlertDialog.Builder(this)
+                    .setView(list)
+                    .setTitle(R.string.system_no_package_available)
+                    .setMessage(R.string.please_subscribe_service_message)
+                    .setPositiveButton(R.string.system_button_ok
+                    ) { _, _ -> ; }
+                    .create()
+            dialog.show()
+
+        }
+
+        /*
+        try {
+
+            val dialog = AlertDialog.Builder(this)
+                    .setView(list)
+                    .setTitle(R.string.choose_package)
+                    .setPositiveButton(R.string.choose_package_submit
+                    ) { _, _ ->processNodes(packages.get(selectPosition).asJsonObject, selectPosition.toString()) }
+                    .create()
+            dialog.show()
+
+        } catch (ex: java.lang.Exception){
+
+        }
+
+         */
+    }
+
+    private fun processNodes(json: JsonObject, id: String) {
+        AngConfigManager.removeServerWithSubid()
+        val uuid = json.get("uuid").asString
+        val nodes = json.get("nodes").asJsonArray
+        for (node in nodes) {
+            val i = node.asString.split("|")
+            val j = JsonObject()
+            j.addProperty("add", i[1])
+            j.addProperty("aid", i[9].replace("\r", ""))
+            j.addProperty("host", i[5])
+            j.addProperty("id", uuid)
+            j.addProperty("net", i[7])
+            j.addProperty("path", i[6])
+            j.addProperty("port", i[2])
+            j.addProperty("ps", i[0])
+            j.addProperty("tls", i[4])
+            j.addProperty("v", 2)
+            j.addProperty("type", i[3])
+
+            val base64 = "vmess://" + Base64.encode(j.toString().toByteArray())
+            Log.d("MainActivity", base64)
+            importBatchConfig(base64, i[0] + id)
         }
     }
 
@@ -180,6 +292,10 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
     }
 
     override fun onOptionsItemSelected(item: MenuItem) = when (item.itemId) {
+        R.id.system_login -> {
+            importLogin();
+            true
+        }
         R.id.import_qrcode -> {
             importQRcode(REQUEST_SCAN)
             true
@@ -268,6 +384,11 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
         else -> super.onOptionsItemSelected(item)
     }
 
+    fun importLogin() {
+        startActivityForResult(Intent("com.v2ray.ang.intent.action.Login")
+                .addCategory(Intent.CATEGORY_DEFAULT)
+                .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP), REQUEST_LOGIN)
+    }
 
     /**
      * import config from qrcode
