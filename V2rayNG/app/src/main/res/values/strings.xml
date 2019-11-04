@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">OO7VPN</string>
+    <string name="app_name"></string>
     <string name="menu_item_login">Login</string>
     <string name="app_widget_name">Switch</string>
     <string name="app_tile_name">Switch</string>
@@ -18,7 +18,7 @@
     <string name="toast_services_failure">Start Services Failure</string>
 
     <!--ServerActivity-->
-    <string name="title_server">Login</string>
+    <string name="title_server">Login to refresh servers</string>
     <string name="menu_item_add_config">Add config</string>
     <string name="menu_item_save_config">Save config</string>
     <string name="menu_item_del_config">Delete config</string>
@@ -117,12 +117,12 @@
     <string name="title_pref_http_port">HTTP proxy port</string>
     <string name="summary_pref_http_port">HTTP proxy port</string>
 
-    <string name="title_pref_feedback">Feedback</string>
+    <string name="title_pref_feedback">Network status</string>
     <string name="summary_pref_feedback">Feedback enhancements or bugs to GitHub</string>
     <string name="summary_pref_tg_group">Join Telegram Group</string>
     <string name="toast_tg_app_not_found">Telegram app not found</string>
 
-    <string name="title_pref_promotion">Promotion</string>
+    <string name="title_pref_promotion">Purchase at oo7.app</string>
     <string name="summary_pref_promotion">Promotion,click for details(Donation can be removed)</string>
 
     <string name="title_pref_version">Version</string>

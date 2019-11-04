@@ -304,37 +304,37 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
             importClipboard()
             true
         }
-        R.id.import_manually_vmess -> {
-            startActivity<ServerActivity>("position" to -1, "isRunning" to isRunning)
-            adapter.updateConfigList()
-            true
-        }
-        R.id.import_manually_ss -> {
-            startActivity<Server3Activity>("position" to -1, "isRunning" to isRunning)
-            adapter.updateConfigList()
-            true
-        }
-        R.id.import_manually_socks -> {
-            startActivity<Server4Activity>("position" to -1, "isRunning" to isRunning)
-            adapter.updateConfigList()
-            true
-        }
-        R.id.import_config_custom_clipboard -> {
-            importConfigCustomClipboard()
-            true
-        }
-        R.id.import_config_custom_local -> {
-            importConfigCustomLocal()
-            true
-        }
-        R.id.import_config_custom_url -> {
-            importConfigCustomUrlClipboard()
-            true
-        }
-        R.id.import_config_custom_url_scan -> {
-            importQRcode(REQUEST_SCAN_URL)
-            true
-        }
+//        R.id.import_manually_vmess -> {
+//            startActivity<ServerActivity>("position" to -1, "isRunning" to isRunning)
+//            adapter.updateConfigList()
+//            true
+//        }
+//        R.id.import_manually_ss -> {
+//            startActivity<Server3Activity>("position" to -1, "isRunning" to isRunning)
+//            adapter.updateConfigList()
+//            true
+//        }
+//        R.id.import_manually_socks -> {
+//            startActivity<Server4Activity>("position" to -1, "isRunning" to isRunning)
+//            adapter.updateConfigList()
+//            true
+ //       }
+ //       R.id.import_config_custom_clipboard -> {
+//            importConfigCustomClipboard()
+//            true
+//        }
+//        R.id.import_config_custom_local -> {
+//            importConfigCustomLocal()
+//            true
+//        }
+//        R.id.import_config_custom_url -> {
+//            importConfigCustomUrlClipboard()
+//            true
+//        }
+//        R.id.import_config_custom_url_scan -> {
+//            importQRcode(REQUEST_SCAN_URL)
+//            true
+//        }
 
 //        R.id.sub_setting -> {
 //            startActivity<SubSettingActivity>()
@@ -346,14 +346,14 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
             true
         }
 
-        R.id.export_all -> {
-            if (AngConfigManager.shareAll2Clipboard() == 0) {
-                //remove toast, otherwise it will block previous warning message
-            } else {
-                toast(R.string.toast_failure)
-            }
-            true
-        }
+//        R.id.export_all -> {
+//            if (AngConfigManager.shareAll2Clipboard() == 0) {
+//                //remove toast, otherwise it will block previous warning message
+//            } else {
+//                toast(R.string.toast_failure)
+//            }
+//            true
+//        }
 
         R.id.ping_all -> {
             for (k in 0 until configs.vmess.count()) {

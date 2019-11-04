@@ -18,10 +18,10 @@
                 android:id="@+id/import_clipboard"
                 android:title="@string/menu_item_import_config_clipboard"
                 app:showAsAction="never" />
-            <item
+<!--            <item
                 android:id="@+id/import_manually_vmess"
                 android:title="@string/menu_item_import_config_manually_vmess"
-                app:showAsAction="never" />
+                app:showAsAction="never" /> >>
             <item
                 android:id="@+id/import_manually_ss"
                 android:title="@string/menu_item_import_config_manually_ss"
@@ -53,14 +53,14 @@
                         android:title="@string/menu_item_import_config_custom_url_scan"
                         app:showAsAction="never" />
                 </menu>
-            </item>
+            </item>  -->
         </menu>
     </item>
-    <item
+<!--   <item
         android:id="@+id/export_all"
         android:icon="@drawable/ic_share_white_24dp"
         android:title="@string/title_export_all"
-        app:showAsAction="never" />
+        app:showAsAction="never" /> -->
     <item
         android:id="@+id/ping_all"
         android:icon="@drawable/ic_share_white_24dp"
