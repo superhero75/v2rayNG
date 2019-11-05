@@ -70,7 +70,7 @@ class MainRecyclerAdapter(val activity: MainActivity) : RecyclerView.Adapter<Mai
             if (configType == AppConfig.EConfigType.Vmess) {
                 holder.type.text = "vmess"
                 holder.statistics.text = "$address : $port"
-                holder.layout_share.visibility = View.VISIBLE
+                holder.layout_share.visibility = View.INVISIBLE
             } else if (configType == AppConfig.EConfigType.Custom) {
                 holder.type.text = mActivity.getString(R.string.server_customize_config)
                 holder.statistics.text = ""//mActivity.getString(R.string.server_customize_config)
@@ -78,11 +78,11 @@ class MainRecyclerAdapter(val activity: MainActivity) : RecyclerView.Adapter<Mai
             } else if (configType == AppConfig.EConfigType.Shadowsocks) {
                 holder.type.text = "shadowsocks"
                 holder.statistics.text = "$address : $port"
-                holder.layout_share.visibility = View.VISIBLE
+                holder.layout_share.visibility = View.INVISIBLE
             } else if (configType == AppConfig.EConfigType.Socks) {
                 holder.type.text = "socks"
                 holder.statistics.text = "$address : $port"
-                holder.layout_share.visibility = View.VISIBLE
+                holder.layout_share.visibility = View.INVISIBLE
             }
 
             holder.layout_share.setOnClickListener {
@@ -170,7 +170,7 @@ class MainRecyclerAdapter(val activity: MainActivity) : RecyclerView.Adapter<Mai
                 holder.layout_edit.visibility = View.INVISIBLE
             } else {
                 holder.layout_edit.setOnClickListener {
-                    Utils.openUri(mActivity, AppConfig.promotionUrl)
+                Utils.openUri(mActivity, AppConfig.promotionUrl)
                 }
             }
         }

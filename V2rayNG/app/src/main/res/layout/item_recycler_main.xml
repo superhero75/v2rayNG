@@ -116,10 +116,10 @@
                         android:orientation="vertical"
                         android:paddingEnd="@dimen/layout_margin_right_height">
 
-                        <ImageView
+ <!--                       <ImageView
                             android:layout_width="wrap_content"
                             android:layout_height="@dimen/png_height"
-                            android:src="@drawable/ic_share_black_24dp" />
+                            android:src="@drawable/ic_share_black_24dp" /> -->
 
                     </LinearLayout>
 
@@ -131,10 +131,10 @@
                         android:orientation="vertical"
                         android:paddingEnd="@dimen/layout_margin_right_height">
 
-                        <ImageView
+ <!--                       <ImageView
                             android:layout_width="@dimen/png_height"
                             android:layout_height="@dimen/png_height"
-                            android:src="@drawable/ic_edit_black_24dp" />
+                            android:src="@drawable/ic_edit_black_24dp" /> -->
 
                     </LinearLayout>
 
@@ -145,7 +145,6 @@
                         android:gravity="center"
                         android:orientation="vertical"
                         android:paddingEnd="@dimen/layout_margin_right_height">
-
                         <ImageView
                             android:layout_width="@dimen/png_height"
                             android:layout_height="@dimen/png_height"
